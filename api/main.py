@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI
+from api.routes.mysql_records import router as mysql_records_router
 
 from api.dependencies import (
     get_mysql_connection,
@@ -11,7 +12,7 @@ app = FastAPI(
     description="CRUD and time-series endpoints for MySQL and MongoDB",
     version="1.0.0",
 )
-
+app.include_router(mysql_records_router)
 
 @app.get("/")
 def root():
