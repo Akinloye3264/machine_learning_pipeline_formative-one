@@ -262,7 +262,7 @@ The current suite contains:
 | Ptuyizere | Task 1: EDA, preprocessing, feature engineering and model training |
 | Jonathan Mugisha | Task 2: MySQL, MongoDB, queries and ERD |
 | Akinloye | Task 3: FastAPI, CRUD, time-series endpoints and API tests |
-| Add fourth member’s name | Task 4: prediction and forecasting integration |
+| Inyange Larissa | Task 4: prediction and forecasting integration |
 
 Replace the displayed names with the formal names required in the final report.
 
