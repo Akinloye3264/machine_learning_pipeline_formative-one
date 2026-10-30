@@ -216,10 +216,12 @@ def build_feature_row(
     previous_24 = traffic.loc[
         timestamp - pd.Timedelta(hours=ROLLING_WINDOW) : timestamp - pd.Timedelta(hours=1)
     ]
+    day_of_week = timestamp.day_of_week
+
     return {
         "hour": timestamp.hour,
-        "dayofweek": timestamp.dayofweek,
-        "is_weekend": int(timestamp.dayofweek >= 5),
+        "dayofweek": day_of_week,
+        "is_weekend": int(day_of_week >= 5),
         "temp": weather["temp"],
         "clouds_all": weather["clouds_all"],
         "rain_1h": weather["rain_1h"],
