@@ -172,17 +172,19 @@ weather_readings: 48187
 
 ## Restore MongoDB
 
-```powershell
-mongoimport --uri "mongodb://localhost:27017" --db "traffic_db" --collection "traffic_observations" --file "database\traffic_db_mongodb.jsonl"
-```
-
-Create the timestamp index:
+First, create or update the collection validator and unique timestamp index:
 
 ```powershell
-mongosh --quiet --eval "db.getSiblingDB('traffic_db').traffic_observations.createIndex({date_time:1},{unique:true})"
+mongosh --quiet --file "database\mongodb\setup_collection.js"
 ```
 
-Verify:
+Import the documents. Upsert mode allows the command to be safely rerun:
+
+```powershell
+mongoimport --uri "mongodb://localhost:27017" --db "traffic_db" --collection "traffic_observations" --file "database\traffic_db_mongodb.jsonl" --mode upsert --upsertFields date_time
+```
+
+Verify the number of documents:
 
 ```powershell
 mongosh --quiet --eval "db.getSiblingDB('traffic_db').traffic_observations.countDocuments({})"
@@ -193,6 +195,14 @@ Expected:
 ```text
 40575
 ```
+
+Verify that the validator is installed:
+
+```powershell
+mongosh --quiet --eval "printjson(db.getSiblingDB('traffic_db').getCollectionInfos({name:'traffic_observations'})[0].options.validator)"
+```
+
+The output should contain `$jsonSchema` and the required `date_time`, `traffic_volume`, and `weather` fields.
 
 ## Run the API
 
