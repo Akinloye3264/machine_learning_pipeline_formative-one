@@ -98,7 +98,7 @@ Notes:
 
 - The model uses the weather of the hour it predicts. Future weather is unknown, so the last observed weather is carried forward. Override it with `--temp-k`, `--rain-1h` and `--clouds-all`.
 - With `--horizon` above 1 the forecast is recursive: each predicted hour feeds the lags of the next one, so error grows with the horizon.
-- The moving average uses the 24 hours **before** the target hour. The moving average uses the 24 hours before the target hour in both Task 1 and Task 4, preventing target leakage. The corrected model achieves an MAE of 156.62 vehicles per hour on the 2018 holdout set.
+- The moving average uses the 24 hours before the target hour in both Task 1 and Task 4, preventing target leakage. The corrected model achieves an MAE of 156.62 vehicles per hour on the 2018 holdout set.
 - The dataset ends on 2018-09-30 23:00, so the default run forecasts 2018-10-01 00:00. Use `--as-of` to compare forecasts with real values.
 - The model was saved with scikit-learn 1.6.1, which is pinned in `requirements.txt`.
 
