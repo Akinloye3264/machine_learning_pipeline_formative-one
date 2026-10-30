@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" modified="2026-10-30T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="traffic-db-erd" name="Traffic Database ERD">
+    <mxGraphModel dx="1600" dy="950" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Traffic Database Entity-Relationship Diagram" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontStyle=1;fontColor=#12355B;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="holidays" value="&lt;b&gt;HOLIDAYS&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; holiday_id : INT AUTO_INCREMENT&lt;br&gt;&lt;b&gt;UK&lt;/b&gt; holiday_name : VARCHAR(50) NOT NULL" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=14;fontSize=17;fillColor=#E8F1FB;strokeColor=#2F6FA5;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="110" width="410" height="190" as="geometry" />
+        </mxCell>
+
+        <mxCell id="trafficObservations" value="&lt;b&gt;TRAFFIC_OBSERVATIONS&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; obs_id : INT AUTO_INCREMENT&lt;br&gt;&lt;b&gt;UK&lt;/b&gt; date_time : DATETIME NOT NULL&lt;br&gt;traffic_volume : INT NOT NULL&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; holiday_id : INT NULL" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=14;fontSize=17;fillColor=#EAF7EE;strokeColor=#398A50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="600" y="90" width="460" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="weatherConditions" value="&lt;b&gt;WEATHER_CONDITIONS&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; condition_id : INT AUTO_INCREMENT&lt;br&gt;weather_main : VARCHAR(30) NOT NULL&lt;br&gt;weather_description : VARCHAR(255) NOT NULL&lt;br&gt;&lt;br&gt;&lt;b&gt;COMPOSITE UK&lt;/b&gt;&lt;br&gt;(weather_main, weather_description)" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=14;fontSize=17;fillColor=#E8F1FB;strokeColor=#2F6FA5;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="580" width="520" height="270" as="geometry" />
+        </mxCell>
+
+        <mxCell id="weatherReadings" value="&lt;b&gt;WEATHER_READINGS&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; reading_id : INT AUTO_INCREMENT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; obs_id : INT NOT NULL&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; condition_id : INT NOT NULL&lt;br&gt;temp_k : DECIMAL(6,2) NULL&lt;br&gt;rain_1h : DECIMAL(7,2) NULL&lt;br&gt;snow_1h : DECIMAL(5,2) NULL&lt;br&gt;clouds_all : INT NULL" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=14;fontSize=17;fillColor=#FFF3E5;strokeColor=#C87A20;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="500" width="540" height="350" as="geometry" />
+        </mxCell>
+
+        <mxCell id="holidayRelationship" value="classifies" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;startArrow=ERzeroToOne;startFill=0;endArrow=ERzeroToMany;endFill=0;" edge="1" parent="1" source="holidays" target="trafficObservations">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="observationRelationship" value="has readings" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;" edge="1" parent="1" source="trafficObservations" target="weatherReadings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="conditionRelationship" value="classifies readings" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;" edge="1" parent="1" source="weatherConditions" target="weatherReadings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="Cardinality: HOLIDAYS 0..1 to TRAFFIC_OBSERVATIONS 0..* | TRAFFIC_OBSERVATIONS 1 to WEATHER_READINGS 0..* | WEATHER_CONDITIONS 1 to WEATHER_READINGS 0..*" style="text;html=1;align=center;verticalAlign=middle;fontSize=14;fontColor=#465568;" vertex="1" parent="1">
+          <mxGeometry x="160" y="880" width="1280" height="35" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
