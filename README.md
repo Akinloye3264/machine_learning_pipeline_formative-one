@@ -102,7 +102,33 @@ Notes:
 - The dataset ends on 2018-09-30 23:00, so the default run forecasts 2018-10-01 00:00. Use `--as-of` to compare forecasts with real values.
 - The model was saved with scikit-learn 1.6.1, which is pinned in `requirements.txt`.
 
-Run the offline tests (no database needed):
+### Reproduce the Task 4 benchmark
+
+Run the benchmark from the repository root:
+
+```powershell
+python task4_prediction/benchmark_forecasts.py
+```
+
+The benchmark selects 207 origins evenly spaced across 6,223 eligible hourly origins in 2018. An origin is eligible only when actual traffic values exist for each of the following 24 hours. Forecasts are recursive and use the last observed weather for future hours.
+
+The reported MAE is measured at each exact forecast lead:
+
+| Forecast horizon | MAE (vehicles/hour) |
+|---:|---:|
+| 1 hour | 171.87 |
+| 3 hours | 216.31 |
+| 6 hours | 230.00 |
+| 12 hours | 281.38 |
+| 24 hours | 289.66 |
+
+The generated evidence is stored in:
+
+- `task4_prediction/results/forecast_benchmark_details.csv`
+- `task4_prediction/results/forecast_benchmark_summary.csv`
+- `task4_prediction/results/forecast_mae_by_horizon.png`
+
+Run the offline tests without a database:
 
 ```powershell
 pytest task4_prediction -v
@@ -301,9 +327,9 @@ The current suite contains:
 
 | Member | Main contribution |
 |---|---|
-| Ptuyizere | Task 1: EDA, preprocessing, feature engineering and model training |
+| Patrick tuyizere | Task 1: EDA, preprocessing, feature engineering and model training |
 | Jonathan Mugisha | Task 2: MySQL, MongoDB, queries and ERD |
-| Akinloye | Task 3: FastAPI, CRUD, time-series endpoints and API tests |
+| Akinloye Emmanuel | Task 3: FastAPI, CRUD, time-series endpoints and API tests |
 | Inyange Larissa | Task 4: prediction and forecasting integration |
 
 Replace the displayed names with the formal names required in the final report.
