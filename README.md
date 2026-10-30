@@ -44,6 +44,10 @@ database/
 task1_eda_ml/
 ├── task1_eda_and_lags.ipynb
 └── traffic_forecasting_model.pkl
+
+task4_prediction/
+├── predict_traffic.py
+└── test_predict_traffic.py
 ```
 
 ## Completed tasks
@@ -74,7 +78,35 @@ The FastAPI application provides CRUD and time-series queries for both MySQL and
 
 ### Task 4: Prediction integration
 
-The prediction script will fetch historical records from the API, reproduce the training features, load the saved model and return a forecast.
+`task4_prediction/predict_traffic.py` runs the full forecasting pipeline:
+
+1. **Fetch** the latest record and the previous 8 days of hourly records from the API (`/latest` and `/range`)
+2. **Preprocess** them with the Task 1 rules: sensor faults removed, duplicate hours averaged, a complete hourly index, interpolation of temperature and clouds, rain and snow filled with 0, forward-fill of traffic
+3. **Load** `task1_eda_ml/traffic_forecasting_model.pkl`
+4. **Predict** the next hour (or the next N hours) of `traffic_volume`
+
+Start the API first, then run from the repository root:
+
+```powershell
+python task4_prediction/predict_traffic.py                                  # next hour, MySQL
+python task4_prediction/predict_traffic.py --source mongodb --horizon 6     # next 6 hours, MongoDB
+python task4_prediction/predict_traffic.py --as-of 2018-09-20T06:00:00 --horizon 6   # backtest vs real values
+python task4_prediction/predict_traffic.py --json                           # machine-readable output
+```
+
+Notes:
+
+- The model uses the weather of the hour it predicts. Future weather is unknown, so the last observed weather is carried forward. Override it with `--temp-k`, `--rain-1h` and `--clouds-all`.
+- With `--horizon` above 1 the forecast is recursive: each predicted hour feeds the lags of the next one, so error grows with the horizon.
+- The moving average uses the 24 hours **before** the target hour. In Task 1 it also included the target hour itself; on the 2018 test set this changes MAE from 155.0 to 157.1.
+- The dataset ends on 2018-09-30 23:00, so the default run forecasts 2018-10-01 00:00. Use `--as-of` to compare forecasts with real values.
+- The model was saved with scikit-learn 1.6.1, which is pinned in `requirements.txt`.
+
+Run the offline tests (no database needed):
+
+```powershell
+pytest task4_prediction -v
+```
 
 ## Requirements
 

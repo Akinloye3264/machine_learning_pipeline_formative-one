@@ -6,3 +6,7 @@ python-dotenv
 pydantic
 pytest
 httpx
+scikit-learn==1.6.1
+pandas
+numpy
+joblib
